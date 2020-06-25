@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "api-http"
+    }
+  },
+  "defaultProject": "api-http",
+  "cli": {
+    "analytics": false
+  }
 }
