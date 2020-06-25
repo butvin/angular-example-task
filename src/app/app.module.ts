@@ -4,12 +4,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PostsComponent } from './commponents/posts/posts.component';
+import { PostsComponent } from './components/posts/posts.component';
+import { LoadScrollComponent } from './components/load-scroll/load-scroll.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostsComponent
+    PostsComponent,
+    LoadScrollComponent
   ],
   imports: [
     BrowserModule,
