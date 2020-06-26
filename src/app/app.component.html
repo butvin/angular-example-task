@@ -1,9 +1,10 @@
-<div>
-    <h1>AppComponent HTML</h1>
-    <h2>{{ title }}</h2>
-    <app-posts></app-posts>
+<div id="app-component" class="container" *ngIf="title" >
+  <div class="row">
+    <div class="col">
+      <h1 class=" text-center">{{title | uppercase}}</h1>
+    </div>
+  </div>
 </div>
+<app-posts></app-posts>
 
-
-
-<router-outlet></router-outlet>
+<!--<router-outlet></router-outlet>-->

@@ -1,0 +1,39 @@
+#posts-component {
+  background: #8b8687;
+  color: #e3dede;
+}
+
+.post-entity {
+  color: #e3dede;
+  margin: 0.75em auto;
+  width: 100%;
+  background: #333030;
+  float: left;
+}
+
+
+.second-post-title {
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 100;
+  line-height: 1.5;
+  margin: 0 0 1.5em;
+}
+
+.card-text {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.card-title {
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.post-title {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+}

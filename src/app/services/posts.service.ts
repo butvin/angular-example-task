@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {from, Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ajax, AjaxError, AjaxResponse} from 'rxjs/ajax';
 
 
-
 @Injectable({ providedIn: 'root' })
+
 export class PostsService {
 
   HOST = 'https://gorest.co.in/public-api/';
@@ -16,7 +16,7 @@ export class PostsService {
   httpParams: HttpParams = new HttpParams()
     .set('posts?access-token', this.TOKEN)
     .set('_format' , 'json');
-  // .set('page' , '5');
+  // .set('page' , '[number]');
 
   url: string = this.HOST + this.httpParams;
 
@@ -28,7 +28,7 @@ export class PostsService {
    */
   public getPosts(pageNumber: number): Observable<any> {
     const url: string = this.url + '&page=' + pageNumber.toString();
-    return this.postsService.get(url, {responseType: 'json'}).pipe(catchError( this.handleError ));
+    return this.postsService.get(url, {responseType: 'json'} ).pipe(catchError( this.handleError ));
   }
 
   /* Get posts using Ajax. */
@@ -55,4 +55,5 @@ export class PostsService {
     // return an observable with a user-facing error message
     return throwError('Huston, we have a trouble...');
   }
+
 }
