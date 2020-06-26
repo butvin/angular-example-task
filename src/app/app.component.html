@@ -1,10 +1,11 @@
-<div id="app-component" class="container" *ngIf="title" >
+<div id="app-component" class="container"  >
   <div class="row">
     <div class="col">
-      <h1 class=" text-center">{{title | uppercase}}</h1>
+      <h1 *ngIf="title" class="display-3">{{title | uppercase}}
+        <small><a href="https://gorest.co.in/">https://gorest.co.in/</a></small>
+      </h1>
     </div>
   </div>
 </div>
 <app-posts></app-posts>
-
 <!--<router-outlet></router-outlet>-->

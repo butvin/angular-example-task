@@ -1,12 +1,9 @@
 import {Component, Injectable, OnDestroy, OnInit} from '@angular/core';
-import { Observable, Subscription, Subscriber, throwError} from 'rxjs';
+import { Observable, throwError} from 'rxjs';
 
 import { PostsService } from '../../services/posts.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Post } from './post/post.component';
-import { PostComponent } from './post/post.component';
-import {finalize} from 'rxjs/operators';
-import {SubscribeOnObservable} from 'rxjs/internal-compatibility';
 
 export interface PostsState {
   hasMore?: boolean;
@@ -26,45 +23,21 @@ export const initState: PostsState = {
   styleUrls: ['./posts.component.css']
 })
 
-
-// export class PostsQuery implements PostsState{
-//   constructor() {
-//     super();
-//   }
-//
-//   hasMore: boolean;
-//   page: number;
-//
-//   getHasMore() {
-//     return this.hasMore;
-//   }
-//
-//   getPage() {
-//     return this.page;
-//   }
-// }
-
 export class PostsComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
 
+  private page: number = null;
   posts$: Observable<Post[]>;
   isLoading$: Observable<boolean>;
-
-  // private observer: IntersectionObserver;
-
-  public posts: Array<any> = [];
-  // public posts: number | any[] = [];
-  metaResponse;
+  posts: Array<any> = [];
   error;
   time;
-  private page: number = null;
-
   response;
-  public meta: {};
+  meta: {};
+  trackByFn(){
+    return false;
+  }
 
   constructor(private postsService: PostsService) {}
-
-
 
   private getCurrentPage(): number {
     return this.page === null ? 1 : this.page;
@@ -75,22 +48,19 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   private fetchPosts() {
-
     const page: number = this.getCurrentPage();
-    console.log(page);
 
     this.postsService.getPosts(page).subscribe(
       (response: JSON) => {
         JSON.parse(JSON.stringify(response));
         const posts: [] = (response as any).result;
         const _meta: {} = (response as any)._meta;
-        // this.response = JSON.parse(JSON.stringify(response));
+        this.response = JSON.parse(JSON.stringify(response));
         this.meta = JSON.parse(JSON.stringify(_meta));
         this.posts = this.posts.concat([ ...JSON.parse(JSON.stringify(posts))]);
-        // console.log('_meta => ', _meta);
-        console.log('This 20 qty.=> ', posts);
-        console.log('Total qty => ', this.posts);
-        // console.log('meta => ', this.metaResponse);
+        console.log('just loaded => ', posts);
+        console.log('total loaded => ', this.posts);
+        console.log('loaded from => ', page);
       },
       (error: HttpErrorResponse) => {
         this.error = (error.error instanceof ErrorEvent) ?
@@ -98,33 +68,19 @@ export class PostsComponent implements OnInit, OnDestroy {
           (`Code ${error.status}, ` + `Body: ${error.error}`);
         this.error = throwError('Huston, we have a trouble.');
       },
-      () => {
-        // this.isLoading$.subscribe( (next) => {} );
-        console.log(`Posts attached from the ${page} th page`);
-        this.setNextPage();
-      }
-    );
+      () => { this.setNextPage(); });
   }
 
   onScroll() {
-    this.fetchPosts(); // .then( (result) => { console.log('result => ', result); });
+    this.fetchPosts();
   }
 
   ngOnInit() {
-
-    // this.subscription = this.isLoading$.subscribe( (next) => {
-    //   console.log('next[1]', next);
-    // });
-
     this.isLoading$ = new Observable<boolean>(
-      (observer) => {
-        observer.next(true);
-        // observer.complete();
+      (observer) => { observer.next(true);
     });
 
     this.posts$ = new Observable<Post[]>();
-
-    // this.fetchPosts();
 
     /* Get time by Observable every 1000ms */
     this.time = new Observable<string>(observer => {
@@ -133,6 +89,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.isLoading$.unsubscribe();
+    this.isLoading$.subscribe().unsubscribe();
+    this.posts$.subscribe().unsubscribe();
   }
 }

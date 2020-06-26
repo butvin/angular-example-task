@@ -1,10 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
 body {
-  font-family: "Nunito", sans-serif;
-  /*font-family: FontAwesome, monospace;*/
+  font-family: FontAwesome, monospace;
   font-size: 1.5rem;
   font-weight: 200;
   line-height: 1.25;
-  color: #404146;
-  background: #e3dede;
+  color: #1e2022;
+  background: #f0f5f9;
 }

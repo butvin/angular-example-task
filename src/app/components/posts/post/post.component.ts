@@ -10,16 +10,19 @@ export type Post = {
 @Component({
   selector: 'app-post',
   template: `
-    <div class="card" *ngIf="post;">
-      <div class="card-body">
-        <h5 class="card-title">{{ post.title }} <small></small></h5>
-        <p class="card-text">{{ post.body }}</p>
-        <p class="card-text text-right">{{ post.id }}</p>
+    <div class="">
+      <div class="card post-container shadow p-3 mb-5 bg-white rounded border-0" *ngIf="post;">
+        <article class="card-body">
+          <h3 class="card-title font-weight-bold">{{ post.title | uppercase }}</h3>
+          <p class="card-text text-justify lead">{{ post.body }}</p>
+          <p class="card-subtitle mb-2 text-muted text-right">{{ post.id }}</p>
+        </article>
       </div>
     </div>
   `,
   styleUrls: ['./post.component.css']
 })
+
 export class PostComponent implements OnInit {
   @Input() post: Post;
 

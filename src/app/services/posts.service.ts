@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {from, Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ajax, AjaxError, AjaxResponse} from 'rxjs/ajax';
-
 
 @Injectable({ providedIn: 'root' })
 
 export class PostsService {
 
   HOST = 'https://gorest.co.in/public-api/';
-
   TOKEN = 'b0f6mbdwshpphciYndebZJFGgzunFRWws_-0';
 
   httpParams: HttpParams = new HttpParams()
@@ -22,10 +20,7 @@ export class PostsService {
 
   constructor(private postsService: HttpClient) {}
 
-  /**
-   * GET Method
-   * Get posts using GET.
-   */
+  /* Loading posts using GET. */
   public getPosts(pageNumber: number): Observable<any> {
     const url: string = this.url + '&page=' + pageNumber.toString();
     return this.postsService.get(url, {responseType: 'json'} ).pipe(catchError( this.handleError ));

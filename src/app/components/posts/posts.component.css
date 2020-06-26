@@ -3,21 +3,21 @@
   color: #e3dede;
 }
 
-.post-entity {
+.post-container {
+  padding: 2rem;
   color: #e3dede;
-  margin: 0.75em auto;
+  margin: 1em auto;
   width: 100%;
   background: #333030;
   float: left;
 }
 
-
 .second-post-title {
   font-family: 'Open Sans', sans-serif;
-  letter-spacing: 1px;
-  font-weight: 100;
+  letter-spacing: -1px;
+  font-weight: 400;
   line-height: 1.5;
-  margin: 0 0 1.5em;
+  margin: 1.5em;
 }
 
 .card-text {
@@ -27,13 +27,41 @@
 
 .card-title {
   font-weight: 400;
-  font-size: 2.5rem;
-  line-height: 1.2;
+  font-size: 4rem;
 }
 
 .post-title {
   font-family: 'Helvetica Neue', sans-serif;
   font-weight: bold;
   letter-spacing: -1px;
-  line-height: 1;
+  line-height: 1.25;
+}
+
+#fixed-stats-dashboard {
+  font-family: 'Helvetica Neue', monospace;
+  -webkit-border-radius: 0;
+  padding: 0.15em;
+  font-size: 14px;
+  position: fixed;
+  top: 0.1em;
+  right: 0.1em;
+  width: 20%;
+  height: auto;
+  z-index: 999999;
+  min-height: 4em;
+  color: #d8e9ef;
+  background: #6a60a9;
+  font-weight: 100;
+  margin: 2em;
+  line-height: 1.2;
+  opacity: 0.9;
+  letter-spacing: -1px;
+}
+
+#fixed-stats-dashboard p {
+  margin: .25em;
+}
+
+.btn-close-itself {
+  padding: .5rem .5rem;
 }
