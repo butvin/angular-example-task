@@ -11,7 +11,7 @@ export interface ApiDataResponse{
   result: Post[];
 }
 
-export const POSTS: Post[] = [];
+// export const POSTS: Post[] = [];
 
 @Injectable({ providedIn: 'root' })
 
@@ -23,14 +23,18 @@ export const POSTS: Post[] = [];
 
 export class PostsComponent implements OnInit, OnDestroy {
 
-  private page: number = null;
-  posts$;
+  page: number = null;
+  posts$: Observable<Post[]>;
   isLoading$: Observable<boolean>;
   posts: Array<Post> = [];
   error;
   time;
   response$: Observable<ApiDataResponse>;
-  meta: Meta;
+  meta: {};
+
+  trackByIncrement(index: number = 1) {
+    return index++;
+  }
 
   constructor(private postsService: PostsService) {}
 
@@ -45,12 +49,13 @@ export class PostsComponent implements OnInit, OnDestroy {
   private fetchPosts() {
     this.postsService.getPosts(this.getCurrentPage()).subscribe(
       (data) => {
-        // const posts: Post[] = (data as any).result;
+        const posts: Array<Post> = (data as any).result;
         this.meta = (data as any)._meta;
-        this.posts$ = (data as any).result;
-        // this.posts$ = this.posts$.concat([ ...posts]);
-        // console.log('just loaded posts', posts);
-        console.log('this.posts$', this.posts$);
+        console.log(posts, '::', typeof posts);
+        this.posts = this.posts.concat(posts);
+        // this.posts$ = this.posts$.concat([ ...((data as any).result)]);
+        console.log('just loaded meta', this.meta);
+        console.log('this.posts$', this.posts);
         console.log('page', this.getCurrentPage());
       },
       (error: HttpErrorResponse) => {
@@ -83,6 +88,6 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.isLoading$.subscribe().unsubscribe();
-    // this.posts$.subscribe().unsubscribe();
+    this.posts$.subscribe().unsubscribe();
   }
 }

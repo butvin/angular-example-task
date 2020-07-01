@@ -2,18 +2,31 @@
     <app-load-scroll (scrolled)="onScroll()">
       <div class="row">
         <div class="col">
+          <div *ngIf="meta" id="fixed-stats-dashboard" class="alert alert-warning alert-dismissible fade show shadow p-3 mb-5 rounded border-0"  role="alert">
+            <p class="font-weight-bolder lead">Response meta data:</p>
+            <div *ngFor="let i of meta | keyvalue; index as n;">
+              <p>{{ i.key }}:&nbsp;<span class="badge badge-secondary">{{i.value}}</span></p>
+            </div>
+            <p>posts loaded: <span class="badge badge-secondary">(&nbsp;1&nbsp;-&nbsp;{{posts.length}}&nbsp;/&nbsp;{{meta['totalCount']}}&nbsp;)</span></p>
+            <button type="button" class="close btn-close-itself" data-dismiss="alert" aria-label="Close" onClick="$().alert('close')">
+              <span class="font-weight-lighter" aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="alert alert-danger" *ngIf="!posts$">Huston, we have a trouble...<br>Posts are empty...</div>
-          <app-post *ngFor="let post of posts$;" [post]="post"></app-post>
+        <ul class="list-group">
+          <li class="list-group list-group-flush" *ngFor="let post of posts; index as i">
+            <span class="text-muted">{{i+1 | number}}</span>
+            <app-post [post]="post"></app-post>
+          </li>
+        </ul>
         </div>
       </div>
 
       <div class="row">
         <div class="col" style="height: 10vh;">
           <div class="text-center" *ngIf="isLoading$ | async">
-            <div class="spinner-border spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-            <span class="display-4">&nbsp;Loading...&nbsp;</span>
+            <div class="spinner-border spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+            <div class="display-4">&nbsp;Loading...&nbsp;</div>
           </div>
         </div>
       </div>
