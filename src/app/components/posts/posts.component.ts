@@ -1,19 +1,17 @@
 import {Component, Injectable, OnDestroy, OnInit} from '@angular/core';
-import { Observable, throwError} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 
-import { PostsService } from '../../services/posts.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Post } from './post/post.component';
+import {PostsService} from '../../services/posts.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Post} from './post/post';
+import {Meta} from './meta';
 
-export interface PostsState {
-  hasMore?: boolean;
-  page: number;
+export interface ApiDataResponse{
+  _meta: Meta;
+  result: Post[];
 }
 
-export const initState: PostsState = {
-  hasMore: true,
-  page: 1
-};
+export const POSTS: Post[] = [];
 
 @Injectable({ providedIn: 'root' })
 
@@ -26,16 +24,13 @@ export const initState: PostsState = {
 export class PostsComponent implements OnInit, OnDestroy {
 
   private page: number = null;
-  posts$: Observable<Post[]>;
+  posts$;
   isLoading$: Observable<boolean>;
-  posts: Array<any> = [];
+  posts: Array<Post> = [];
   error;
   time;
-  response;
-  meta: {};
-  trackByFn(){
-    return false;
-  }
+  response$: Observable<ApiDataResponse>;
+  meta: Meta;
 
   constructor(private postsService: PostsService) {}
 
@@ -48,27 +43,24 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   private fetchPosts() {
-    const page: number = this.getCurrentPage();
-
-    this.postsService.getPosts(page).subscribe(
-      (response: JSON) => {
-        JSON.parse(JSON.stringify(response));
-        const posts: [] = (response as any).result;
-        const _meta: {} = (response as any)._meta;
-        this.response = JSON.parse(JSON.stringify(response));
-        this.meta = JSON.parse(JSON.stringify(_meta));
-        this.posts = this.posts.concat([ ...JSON.parse(JSON.stringify(posts))]);
-        console.log('just loaded => ', posts);
-        console.log('total loaded => ', this.posts);
-        console.log('loaded from => ', page);
+    this.postsService.getPosts(this.getCurrentPage()).subscribe(
+      (data) => {
+        // const posts: Post[] = (data as any).result;
+        this.meta = (data as any)._meta;
+        this.posts$ = (data as any).result;
+        // this.posts$ = this.posts$.concat([ ...posts]);
+        // console.log('just loaded posts', posts);
+        console.log('this.posts$', this.posts$);
+        console.log('page', this.getCurrentPage());
       },
       (error: HttpErrorResponse) => {
-        this.error = (error.error instanceof ErrorEvent) ?
-          error.error.message :
-          (`Code ${error.status}, ` + `Body: ${error.error}`);
-        this.error = throwError('Huston, we have a trouble.');
-      },
-      () => { this.setNextPage(); });
+              this.error = (error.error instanceof ErrorEvent) ?
+                error.error.message :
+                (`Code ${error.status}, ` + `Body: ${error.error}`);
+              this.error = throwError('Huston, we have a trouble.');
+            },
+      () => this.setNextPage()
+    );
   }
 
   onScroll() {
@@ -76,6 +68,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.isLoading$ = new Observable<boolean>(
       (observer) => { observer.next(true);
     });
@@ -90,6 +83,6 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.isLoading$.subscribe().unsubscribe();
-    this.posts$.subscribe().unsubscribe();
+    // this.posts$.subscribe().unsubscribe();
   }
 }

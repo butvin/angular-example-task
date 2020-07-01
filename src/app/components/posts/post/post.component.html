@@ -1,0 +1,9 @@
+<div class="">
+  <div class="card post-container shadow p-3 mb-5 bg-white rounded border-0">
+    <article *ngIf="post;" class="card-body">
+      <h3 class="card-title font-weight-bold">{{ post.title }}</h3>
+      <p class="card-text text-justify lead">{{ post.body }}</p>
+      <p class="card-subtitle mb-2 text-muted text-right">{{ post.id }}</p>
+    </article>
+  </div>
+</div>

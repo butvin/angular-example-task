@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {from, Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {ajax, AjaxError, AjaxResponse} from 'rxjs/ajax';
+
+import { Post } from '../components/posts/post/post';
+import {ApiDataResponse} from '../components/posts/posts.component';
 
 @Injectable({ providedIn: 'root' })
 
@@ -14,16 +17,20 @@ export class PostsService {
   httpParams: HttpParams = new HttpParams()
     .set('posts?access-token', this.TOKEN)
     .set('_format' , 'json');
-  // .set('page' , '[number]');
 
   url: string = this.HOST + this.httpParams;
 
-  constructor(private postsService: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   /* Loading posts using GET. */
-  public getPosts(pageNumber: number): Observable<any> {
+  getPosts(pageNumber: number): Observable<Post[]> {
     const url: string = this.url + '&page=' + pageNumber.toString();
-    return this.postsService.get(url, {responseType: 'json'} ).pipe(catchError( this.handleError ));
+    return this.httpClient.get<Post[]>(url).pipe(catchError(this.handleError));
+  }
+
+  getApiResponse(pageNumber: number): Observable<ApiDataResponse> {
+    const url: string = this.url + '&page=' + pageNumber.toString();
+    return this.httpClient.get<ApiDataResponse>(url).pipe(catchError(this.handleError));
   }
 
   /* Get posts using Ajax. */

@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { PostComponent } from './components/posts/post/post.component';
 import { LoadScrollComponent } from './components/load-scroll/load-scroll.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,12 +18,13 @@ import { LoadScrollComponent } from './components/load-scroll/load-scroll.compon
     PostsComponent,
     PostComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    NgxInfiniteScrollerModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgxInfiniteScrollerModule,
+        FormsModule,
+    ],
   exports: [LoadScrollComponent],
   providers: [],
   bootstrap: [AppComponent]
